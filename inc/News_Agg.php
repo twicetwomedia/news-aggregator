@@ -19,23 +19,20 @@ class News_Agg extends newsagg_LifeCycle {
     );
   }
 
-  protected function initOptions() {
-    $options = $this->getOptionMetaData();
-    if (!empty($options)) {
-      foreach ($options as $key => $arr) {
-        if (is_array($arr) && count($arr > 1)) {
-          $this->addOption($key, $arr[1]);
-        }
-      }
-    }
-  }
-
   public function getPluginDisplayName() {
     return 'News Aggregator';
   }
 
   protected function getMainPluginFileName() {
     return 'news-aggregator.php';
+  }
+
+  protected function getPluginDir() {
+    $name = dirname(__FILE__);
+    if ( strpos($name, '/inc') !== false ) {
+      $name = str_replace('/inc', '', $name);
+    }
+    return $name;
   }
 
   public function upgrade() {

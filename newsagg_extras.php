@@ -2,12 +2,12 @@
 /**
  * extras
 **/
-function plugin_add_settings_link( $links ) {
+function newsagg_add_settings_link( $links ) {
     $settings_link = '<a href="tools.php?page=News_Agg_Settings">' . __( 'Settings' ) . '</a>';
     array_unshift( $links, $settings_link );
     return $links;
 }
-add_filter( 'plugin_action_links_' . $newsagg_basename, 'plugin_add_settings_link' );
+add_filter( 'plugin_action_links_' . $newsagg_basename, 'newsagg_add_settings_link' );
 
 add_shortcode( 'newsaggregator', 'newsagg_shortcode' );
 function newsagg_shortcode( $atts ) {
@@ -17,15 +17,15 @@ function newsagg_shortcode( $atts ) {
       'style'  => 'Light',
       'images' => 'Show'
   ), $atts );
-  $topic = get_option('News_Agg')['topic'] ?: "{$a['topic']}";
+  $topic = isset( get_option('News_Agg')['topic'] ) ? get_option('News_Agg')['topic'] : "{$a['topic']}";
   $topic = strtolower( str_replace(' ', '-', $topic) );
-  $count = get_option('News_Agg')['count'] ?: "{$a['count']}";
+  $count = isset( get_option('News_Agg')['count'] ) ? get_option('News_Agg')['count'] : "{$a['count']}";
   if ( ! is_numeric($count) ) {
     $count = 4;
   }
-  $style = get_option('News_Agg')['style'] ?: "{$a['style']}";
+  $style = isset( get_option('News_Agg')['style'] ) ? get_option('News_Agg')['style'] : "{$a['style']}";
   $style = strtolower($style);
-  $images = get_option('News_Agg')['images'] ?: "{$a['images']}";
+  $images = isset( get_option('News_Agg')['images'] ) ? get_option('News_Agg')['images'] : "{$a['images']}";
   $images = strtolower($images);
   $topic_arr = array( 'trending', 'headlines', 'business', 'entertainment', 'health', 'politics', 'science', 'sports', 'technology' );
   if ( in_array($topic, $topic_arr) ) {

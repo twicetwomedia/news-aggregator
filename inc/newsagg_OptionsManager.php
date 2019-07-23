@@ -25,13 +25,6 @@ class newsagg_OptionsManager {
   }
 
   /**
-   * Override this method to initialize options to default values and save to the database with add_option
-   * @return void
-   */
-  protected function initOptions() {
-  }
-
-  /**
    * Cleanup: remove all known options from the DB
    * @return void
    */

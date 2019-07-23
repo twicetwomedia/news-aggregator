@@ -67,10 +67,16 @@ class newsagg_InstallIndicator extends newsagg_OptionsManager {
   }
 
   /**
+   * @return string
+   */
+  protected function getPluginDir() {
+    return dirname(__FILE__);
+  }
+
+  /**
    * @return string if found, otherwise null
    */
   public function getPluginHeaderValue($key) {
-    // Read the string from the comment header of the main plugin file
     $data = file_get_contents($this->getPluginDir() . DIRECTORY_SEPARATOR . $this->getMainPluginFileName());
     $match = array();
     preg_match('/' . $key . ':\s*(\S+)/', $data, $match);
@@ -78,13 +84,6 @@ class newsagg_InstallIndicator extends newsagg_OptionsManager {
       return $match[1];
     }
     return null;
-  }
-
-  /**
-   * @return string
-   */
-  protected function getPluginDir() {
-    return dirname(__FILE__);
   }
 
   /**

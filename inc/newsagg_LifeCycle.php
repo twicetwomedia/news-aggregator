@@ -22,18 +22,21 @@ class newsagg_LifeCycle extends newsagg_InstallIndicator {
    * @return void
    */
   public function upgrade() {
+    $this->saveInstalledVersion();
   }
 
   /**
    * @return void
    */
-  public function activate() {   
+  public function activate() {  
+    $this->saveInstalledVersion(); 
   }
 
   /**
    * @return void
    */
   public function deactivate() {
+    $this->saveInstalledVersion(); 
   }
 
   /**

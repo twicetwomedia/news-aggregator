@@ -5,12 +5,12 @@
 class NewsAggregator {
 
   public function __construct() { 
-    //news-aggregator-contstruct
+    //news-aggregator-construct
   }
 
   public function getnews($topic=null) {
 
-    $apiKey = base64_decode( get_option('News_Agg')['apikey'] ) ?: null;
+    $apiKey = isset( get_option('News_Agg')['apikey'] ) ? base64_decode( get_option('News_Agg')['apikey'] ) : null;
 
     if ( ($apiKey) && ($topic) ) {
 
@@ -20,9 +20,11 @@ class NewsAggregator {
     
       if ( $news === false ) {
 
+        $host = $_SERVER['SERVER_NAME'] ?: $_SERVER['HTTP_HOST'];
         $api_url = 'https://api.plnia.com/v1/news/';
         $args = array(
-          'headers' => array(
+          'headers' => array( 
+            'Host' => $host,
             'Authorization' => $apiKey
           ),
           'body' => array(
