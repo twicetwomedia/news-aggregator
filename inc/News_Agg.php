@@ -35,7 +35,12 @@ class News_Agg extends newsagg_LifeCycle {
     return $name;
   }
 
-  public function upgrade() {
+  public function upgrade($upgrade_now=true) {
+    $saved_version = $this->getVersionSaved();
+    $curr_version = $this->getVersion();
+    if ( ($upgrade_now) && ($saved_version != $curr_version) ) {
+      $this->saveInstalledVersion();
+    }
   }
 
   public function newsagg_check_for_jquery() {
@@ -57,6 +62,7 @@ class News_Agg extends newsagg_LifeCycle {
     add_action( 'init', array(&$this, 'newsagg_check_for_jquery') );
     add_action( 'wp_enqueue_scripts', array(&$this, 'newsagg_styles_and_scripts') );
     add_action( 'admin_enqueue_scripts', array(&$this, 'newsagg_admin_styles') );
+    add_action( 'wp_ajax_newsagg_f_f_f', 'newsagg_f_f_f' );
   } 
 
 }

@@ -94,7 +94,6 @@ class newsagg_InstallIndicator extends newsagg_OptionsManager {
     return $this->getPluginHeaderValue('Version');
   }
 
-
   /**
    * @return bool true if the version saved in the options is earlier than the version declared in getVersion().
    */

@@ -155,51 +155,71 @@ class newsagg_OptionsManager {
     // HTML for the page
     $settingsGroup = get_class($this) . '-settings-group';
     ?>
+        <br />
         <h1 class="news-aggregator-h1"><?php echo esc_html ( $this->getPluginDisplayName() ) . ' '; _e('Settings', 'newsagg'); ?></h1>
         <br />
         <hr />
         <br />
-        <p><a href="<?php echo esc_url( 'https://www.plnia.com/get-news-apikey/' ); ?>" target="_blank"><?php echo esc_html( 'Need an API key?' ); ?></a></p>
         <form id="news-aggregator-settings" method="post" action="">
+        <p><a href="<?php echo esc_url( 'https://www.plnia.com/get-news-apikey/' ); ?>" target="_blank"><?php echo esc_html( 'Need an API key?' ); ?></a></p>
         <?php settings_fields($settingsGroup); ?>
             <table class="custom-plugin form-table"><tbody>
             <?php
             if ($optionMetaData != null) {
-                foreach ($optionMetaData as $aOptionKey => $aOptionMeta) {
-                    $displayText = is_array($aOptionMeta) ? $aOptionMeta[0] : $aOptionMeta;
-                    ?>
-                        <tr valign="top">
-                            <th scope="row"><p><label for="<?php echo esc_html( $aOptionKey ); ?>"><?php echo esc_html( $displayText ); ?></label></p></th>
-                            <td>
-                            <?php $this->createFormControl($aOptionKey, $aOptionMeta, $this->getOption($aOptionKey)); ?>
-                            </td>
-                        </tr>
-                    <?php
+              $disabled = false;
+
+              foreach ($optionMetaData as $aOptionKey => $aOptionMeta) {
+                $displayText = is_array($aOptionMeta) ? $aOptionMeta[0] : $aOptionMeta;
+                if ('topic' == $aOptionKey) {
+                  $fff = isset( get_option('News_Agg')['fff'] ) ? get_option('News_Agg')['fff'] : null;
+                  if ( ! $fff ) {
+                    $disabled = true;
+                  }
+                  if ( ($fff) && ('nwz_' == $fff) ) {
+                    $disabled = true;
+                  }
                 }
+        ?>
+                      <tr valign="top">
+                          <th scope="row"><p><label for="<?php echo esc_html( $aOptionKey ); ?>"><?php echo esc_html( $displayText ); ?></label></p></th>
+                          <td>
+                          <?php $this->createFormControl($aOptionKey, $aOptionMeta, $this->getOption($aOptionKey), $disabled); ?>
+                          </td>
+                      </tr>
+        <?php
+              }
             }
             ?>
             <!--<tr><td style="min-height:33px;">&nbsp;</td></tr>-->
             </tbody></table>
             <p class="submit">
-              <input type="submit" class="button-primary"
+              <input type="submit" id="submit-newsagg-options" class="button-primary"
                      value="<?php _e('Save Changes', 'newsagg') ?>"/>
             </p>
         </form>
         <br />
         <hr />
         <div id="news-aggregator-implementation">
+          <a name="about-free"></a>
           <br />
           <h2>About our free News API</h2>
-          <p>If you opt to utilize our plugin and news aggregation for free by utilizing a <a href="<?php echo esc_url( 'https://www.plnia.com/get-news-apikey/' ); ?>" target="_blank">free API key</a>, you will have free, unlimited access to our Trending News feed. If you wish to add news to your site from one of our other 20+ categories, consider purchasing one of our affordable <a href="<?php echo esc_url( 'https://www.plnia.com/pricing/' ); ?>" target="_blank">paid plans</a>.</p>
+          <p>If you opt to utilize our plugin and news aggregation for free by utilizing a <a href="<?php echo esc_url( 'https://www.plnia.com/get-news-apikey/' ); ?>" target="_blank">free API key</a>, you will have free, unlimited access to our Trending News feed. <strong>If you wish to add news to your site from one of our other 20+ categories, consider purchasing one of our affordable <a href="<?php echo esc_url( 'https://www.plnia.com/pricing/' ); ?>" target="_blank">paid plans</a></strong>.</p>
           <br />
           <h2>Implementation</h2>
           <p>Implementation of News is accomplished via a WordPress shortcode. The defaults set above will be used unless any of the settings are defined within the shortcode itself.</p>
           <br />
           <h3>Attributes</h3>
           <p>All four attributes listed above can also be specified case-by-case when using the shortcode: count, images, topic &amp; style.</p>
-          <h4>Available options</h4>
+          <h4>Available options (free plan)</h4>
           <p>
-            Topic: Trending, Business, Entertainment, Politics, Science, Sports<br />
+            Topic: Trending<br />
+            Count: Any number between 2 &amp; 8<br />
+            Style: light or dark<br />
+            Images: show or hide
+          </p>
+          <h4>Available options (any other plan)</h4>
+          <p>
+            Topic: Trending, Astronomy, Business, Culture, Economy, Entertainment, Environment, Food, Health, Investing, Lifestyle, Movies, Music, Personal Finance, Politics, Science, Sports, Technology, Travel, Weird, World<br />
             Count: Any number between 2 &amp; 8<br />
             Style: light or dark<br />
             Images: show or hide
@@ -227,7 +247,23 @@ class newsagg_OptionsManager {
         </div>
         <br />
         <hr />
-        <br />
+        <script>
+          jQuery(document).on( "click", "#submit-newsagg-options", function(e) {
+            e.preventDefault();
+            var akey = jQuery("#apikey").val();
+            var ajaxurl = '<?php echo admin_url("admin-ajax.php"); ?>';   
+            var newsagg_nonce = '<?php echo wp_create_nonce( "newsagg_ajax_nonce" ); ?>';  
+            var the_ajax_action = 'newsagg_f_f_f';
+            var kdata = {
+              'action'   : the_ajax_action,
+              'security' : newsagg_nonce,
+              'akey'     : akey
+            };
+            jQuery.get(ajaxurl, kdata, function(res){ 
+              jQuery("#news-aggregator-settings").submit();
+            });
+          });
+        </script>
     <?php
 
   }
@@ -236,16 +272,19 @@ class newsagg_OptionsManager {
    * Helper-function outputs the correct form element (input tag, select tag) for the given item
    * @return void
    */
-  protected function createFormControl($aOptionKey, $aOptionMeta, $savedOptionValue) {
+  protected function createFormControl($aOptionKey, $aOptionMeta, $savedOptionValue, $disabled=false) {
     if (is_array($aOptionMeta) && count($aOptionMeta) >= 2) { // Drop-down list
         $choices = array_slice($aOptionMeta, 1);
         ?>
         <p><select name="<?php echo esc_html( $aOptionKey ); ?>" id="<?php echo esc_html( $aOptionKey ); ?>">
         <?php
-                        foreach ($choices as $aChoice) {
-            $selected = ($aChoice == $savedOptionValue) ? 'selected' : '';
+          $i = 0;
+          foreach ($choices as $aChoice) {
+            $i++;
+            $selectedd = ($aChoice == $savedOptionValue) ? 'selected' : '';
+            $disabledd = ( ($disabled) && ($i > 1) ) ? 'disabled' : '';
             ?>
-                <option value="<?php echo esc_html( $aChoice ); ?>" <?php echo $selected ?>><?php echo esc_html( $this->getOptionValueI18nString($aChoice) ); ?></option>
+                <option value="<?php echo esc_html( $aChoice ); ?>" <?php echo $selectedd; ?> <?php echo $disabledd; ?>><?php echo esc_html( $this->getOptionValueI18nString($aChoice) ); ?></option>
             <?php
         }
         ?>

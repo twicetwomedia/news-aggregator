@@ -20,7 +20,15 @@
 	background-color: #d7d8d9;
 }
 #news-aggregator-settings table.custom-plugin.form-table th p, table.custom-plugin.form-table td p {
-	margin: .5em 0;
+	margin: .2em 0 .6em 0;
+	font-size: 16px;
+}
+#news-aggregator-settings table.custom-plugin.form-table input, #news-aggregator-settings table.custom-plugin.form-table select, #news-aggregator-settings table.custom-plugin.form-table textarea {
+	font-size: 16px;
+	padding: .5em;
+}
+#news-aggregator-settings table.custom-plugin.form-table select {
+	height: 35px;
 }
 #news-aggregator-settings table.custom-plugin.form-table td p {
 	margin-top: 18px;
@@ -37,6 +45,7 @@
 }
 #news-aggregator-settings a {
 	color: #234567;
+	font-size: 15px;
 }
 #news-aggregator-settings a:hover {
 	color: #456789;
@@ -46,6 +55,9 @@
 }
 #news-aggregator-settings .button-primary:hover {
 	background-color: #456789;
+}
+#news-aggregator-implementation p code {
+	font-size: 15px;
 }
 #news-aggregator-implementation h2 {
 	font-size: 18px;
@@ -60,6 +72,6 @@
 	margin-bottom: 0;
 }
 #news-aggregator-implementation p {
-	margin-top: 7px;
-	font-size: 14px;
+	margin-top: 8px;
+	font-size: 16px;
 }

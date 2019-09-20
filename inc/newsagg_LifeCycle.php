@@ -14,15 +14,14 @@ class newsagg_LifeCycle extends newsagg_InstallIndicator {
   }
 
   public function uninstall() {
-      $this->deleteSavedOptions();
-      $this->markAsUnInstalled();
+    $this->deleteSavedOptions();
+    $this->markAsUnInstalled();
   }
 
   /**
    * @return void
    */
   public function upgrade() {
-    $this->saveInstalledVersion();
   }
 
   /**
@@ -56,7 +55,6 @@ class newsagg_LifeCycle extends newsagg_InstallIndicator {
   }
 
   protected function requireExtraPluginFiles() {
-      //nada2seehear
   }
 
   /**

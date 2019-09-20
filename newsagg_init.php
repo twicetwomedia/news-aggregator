@@ -7,7 +7,7 @@ function newsagg_init($file) {
   require_once( 'inc/News_Agg.php' );
   $newsagg_plugin = new News_Agg();
 
-  if (!$newsagg_plugin->isInstalled()) {
+  if ( ! $newsagg_plugin->isInstalled() ) {
     $newsagg_plugin->install();
   }
   else {

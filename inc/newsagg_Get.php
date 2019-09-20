@@ -4,9 +4,7 @@
 **/
 class NewsAggregator {
 
-  public function __construct() { 
-    //news-aggregator-construct
-  }
+  public function __construct() {}
 
   public function getnews($topic=null) {
 
@@ -15,7 +13,7 @@ class NewsAggregator {
     if ( ($apiKey) && ($topic) ) {
 
       $t_name = 'newsagg_cache_' . $topic;
-      $t_timeout = (60*10);
+      $t_timeout = (60*15);
       $news = get_transient( $t_name );
     
       if ( $news === false ) {
@@ -24,7 +22,6 @@ class NewsAggregator {
         $api_url = 'https://api.plnia.com/v1/news/';
         $args = array(
           'headers' => array( 
-            'Host' => $host,
             'Authorization' => $apiKey
           ),
           'body' => array(

@@ -27,7 +27,7 @@ function newsagg_shortcode( $atts ) {
   $style = strtolower($style);
   $images = isset( get_option('News_Agg')['images'] ) ? get_option('News_Agg')['images'] : "{$a['images']}";
   $images = strtolower($images);
-  $topic_arr = array( 'trending', 'headlines', 'business', 'entertainment', 'health', 'politics', 'science', 'sports', 'technology' );
+  $topic_arr = array( 'trending', 'headlines', 'astronomy', 'business', 'culture', 'economy', 'entertainment', 'environment', 'food', 'health', 'investing', 'lifestyle', 'movies', 'music', 'personal-finance', 'politics', 'science', 'sports', 'technology', 'travel', 'weird', 'world' );
   if ( in_array($topic, $topic_arr) ) {
     $newsagg = New NewsAggregator();
     $news = $newsagg->getnews($topic) ?: null;
@@ -66,5 +66,46 @@ function newsagg_shortcode( $atts ) {
   } else {
     return '<!--news aggregator error-->';     
   }
+
+}
+
+function newsagg_f_f_f() {
+
+  check_ajax_referer( 'newsagg_ajax_nonce', 'security' );
+
+  if ( isset($_GET['akey']) && ('' != isset($_GET['akey'])) ) {
+    $apiKey = $_GET['akey'] ?: null;
+  } else {
+    $apiKey = isset( get_option('News_Agg')['apikey'] ) ? base64_decode( get_option('News_Agg')['apikey'] ) : null;
+  }
+
+  $fff = false;
+
+  if ($apiKey) {
+  
+    $api_url = 'https://api.plnia.com/v1/f__f__f/';
+    $args = array(
+      'headers' => array( 
+        'Authorization' => $apiKey
+      ),
+      'body' => array(
+        'akey' => $apiKey
+      )
+    );
+    $response = wp_remote_get( $api_url, $args );
+
+    if ($response) {
+      $fff = json_decode( wp_remote_retrieve_body( $response ) ) ?: null;
+
+      if ($fff) {
+        $options = get_option('News_Agg');
+        $options['fff'] = $fff;
+        update_option( 'News_Agg', $options );
+      }
+    }
+
+  }
+
+  wp_die();
 
 }
