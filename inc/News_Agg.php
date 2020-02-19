@@ -11,11 +11,12 @@ class News_Agg extends newsagg_LifeCycle {
    */
   public function getOptionMetaData() {
     return array(
-      'apikey' => array(__('API Key', 'newsagg')),
-      'topic' => array(__('Default Topic', 'newsagg'), 'Trending', 'Astronomy', 'Business', 'Culture', 'Economy', 'Entertainment', 'Environment', 'Food', 'Health', 'Investing', 'Lifestyle', 'Movies', 'Music', 'Personal Finance', 'Politics', 'Science', 'Sports', 'Technology', 'Travel', 'Weird', 'World'),
-      'count' => array(__('Default Count', 'newsagg'), '8', '6', '4', '2'),
-      'style' => array(__('Default Style', 'newsagg'), 'Light', 'Dark'),
-      'images' => array(__('Show Images?', 'newsagg'), 'Show', 'Hide')
+      'apikey'  => array(__('API Key', 'newsagg')),
+      'topic'   => array(__('Default Topic', 'newsagg'), 'Trending', 'Astronomy', 'Business', 'Culture', 'Economy', 'Entertainment', 'Environment', 'Food', 'Health', 'Investing', 'Lifestyle', 'Movies', 'Music', 'Personal Finance', 'Politics', 'Science', 'Sports', 'Technology', 'Travel', 'Weird', 'World'),
+      'count'   => array(__('Default Count', 'newsagg'), '8', '6', '4', '2'),
+      'style'   => array(__('Default Style', 'newsagg'), 'Light', 'Dark'),
+      'images'  => array(__('Show Images?', 'newsagg'), 'Show', 'Hide'),
+      'columns' => array(__('Number of Columns?', 'newsagg'), '2', '3', '4', '1')
     );
   }
 
@@ -50,11 +51,11 @@ class News_Agg extends newsagg_LifeCycle {
   }
 
   public function newsagg_styles_and_scripts() {
-    wp_enqueue_style( 'newsaggregator-css', plugins_url('/assets/css/newsaggregator.css', dirname(__FILE__) ));
+    wp_enqueue_style( 'newsaggregator-css', plugins_url('/assets/css/newsaggregator.css', dirname(__FILE__)), array(), NEWSAGG_VER );
   }
 
   public function newsagg_admin_styles() {
-    wp_enqueue_style( 'newsaggregator-css', plugins_url('/assets/css/newsaggregator-admin.css', dirname(__FILE__) ));
+    wp_enqueue_style( 'newsaggregator-admin-css', plugins_url('/assets/css/newsaggregator-admin.css', dirname(__FILE__)), array(), NEWSAGG_VER );
   }
 
   public function addActionsAndFilters() {

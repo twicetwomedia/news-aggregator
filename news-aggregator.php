@@ -3,12 +3,13 @@
    Plugin Name: News Aggregator
    Plugin URI: https://twicetwomedia.com/wordpress-plugins/
    Description: Simple news aggregation feeds for your website.
-   Version: 0.1.3
+   Version: 0.1.4
    Author: twicetwomedia
    Author URI: https://twicetwomedia.com
    Text Domain: newsagg
    License: GPLv3
   */
+defined( 'NEWSAGG_VER' ) or define( 'NEWSAGG_VER', '0.1.4' );
 $newsagg_minReqPhpV = '5.6';
 $newsagg_basename   = plugin_basename( __FILE__ );
 $newsagg_path       = plugin_dir_path( __FILE__ );

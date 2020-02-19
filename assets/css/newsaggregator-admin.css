@@ -24,11 +24,12 @@
 	font-size: 16px;
 }
 #news-aggregator-settings table.custom-plugin.form-table input, #news-aggregator-settings table.custom-plugin.form-table select, #news-aggregator-settings table.custom-plugin.form-table textarea {
-	font-size: 16px;
-	padding: .5em;
+	font-size: 15px;
+	padding: .5em .75em;
+	min-width: 100px;
 }
 #news-aggregator-settings table.custom-plugin.form-table select {
-	height: 35px;
+	height: auto;
 }
 #news-aggregator-settings table.custom-plugin.form-table td p {
 	margin-top: 18px;
@@ -51,7 +52,10 @@
 	color: #456789;
 }
 #news-aggregator-settings .button-primary {
-	background-color: #234567;
+  background-color: #234567;
+  padding: .5em 1em;
+  text-transform: uppercase;
+  font-size: 15px;
 }
 #news-aggregator-settings .button-primary:hover {
 	background-color: #456789;
@@ -74,4 +78,10 @@
 #news-aggregator-implementation p {
 	margin-top: 8px;
 	font-size: 16px;
+}
+#news-aggregator-implementation .plnia-logo {
+	width: 67px;
+	height: auto;
+	margin-left: 2px;
+	vertical-align: bottom;
 }

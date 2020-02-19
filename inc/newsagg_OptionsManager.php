@@ -183,7 +183,13 @@ class newsagg_OptionsManager {
                       <tr valign="top">
                           <th scope="row"><p><label for="<?php echo esc_html( $aOptionKey ); ?>"><?php echo esc_html( $displayText ); ?></label></p></th>
                           <td>
-                          <?php $this->createFormControl($aOptionKey, $aOptionMeta, $this->getOption($aOptionKey), $disabled); ?>
+                          <?php 
+                            if ('topic' == $aOptionKey) {
+                              $this->createFormControl($aOptionKey, $aOptionMeta, $this->getOption($aOptionKey), $disabled); 
+                            } else {
+                              $this->createFormControl($aOptionKey, $aOptionMeta, $this->getOption($aOptionKey), false); 
+                            }
+                            ?>
                           </td>
                       </tr>
         <?php
@@ -203,46 +209,63 @@ class newsagg_OptionsManager {
           <a name="about-free"></a>
           <br />
           <h2>About our free News API</h2>
-          <p>If you opt to utilize our plugin and news aggregation for free by utilizing a <a href="<?php echo esc_url( 'https://www.plnia.com/get-news-apikey/' ); ?>" target="_blank">free API key</a>, you will have free, unlimited access to our Trending News feed. <strong>If you wish to add news to your site from one of our other 20+ categories, consider purchasing one of our affordable <a href="<?php echo esc_url( 'https://www.plnia.com/pricing/' ); ?>" target="_blank">paid plans</a></strong>.</p>
+          <p>If you opt to utilize our plugin and news aggregation for free by utilizing a <a href="<?php echo esc_url( 'https://www.plnia.com/get-news-apikey/' ); ?>" target="_blank">free API key</a>, you will have free, unlimited access to our <strong>Trending News</strong> feed. <strong>If you wish to add news to your site from one of our other 20+ categories, consider purchasing one of our affordable <a href="<?php echo esc_url( 'https://www.plnia.com/pricing/' ); ?>" target="_blank">paid plans</a></strong>.</p>
           <br />
           <h2>Implementation</h2>
-          <p>Implementation of News is accomplished via a WordPress shortcode. The defaults set above will be used unless any of the settings are defined within the shortcode itself.</p>
+          <p>Implementation of News is accomplished via a WordPress shortcode or with our News Aggregator widget. The defaults set above will be used unless any of the settings are defined within the shortcode or the widget itself.</p>
           <br />
           <h3>Attributes</h3>
-          <p>All four attributes listed above can also be specified case-by-case when using the shortcode: count, images, topic &amp; style.</p>
-          <h4>Available options (free plan)</h4>
+          <p>All five attributes listed above can also be specified case-by-case when using the shortcode: count, images, topic, style, &amp; columns. Columns specifies how many columns you want to use to display the news items. For example, if you choose 1 for columns, the news items will be stacked in one column (possibly useful in a sidebar).</p>
+          <h4>Available options (<a href="<?php echo esc_url( 'https://www.plnia.com/get-news-apikey/' ); ?>" target="_blank">free plan</a>)</h4>
           <p>
-            Topic: Trending<br />
+            Topic: <em>Trending News only</em><br />
             Count: Any number between 2 &amp; 8<br />
             Style: light or dark<br />
-            Images: show or hide
+            Images: show or hide<br />
+            Columns: 1, 2, 3, or 4<br />
           </p>
-          <h4>Available options (any other plan)</h4>
+          <h4>Available options (<a href="<?php echo esc_url( 'https://www.plnia.com/pricing/' ); ?>" target="_blank">any other plan</a>)</h4>
           <p>
             Topic: Trending, Astronomy, Business, Culture, Economy, Entertainment, Environment, Food, Health, Investing, Lifestyle, Movies, Music, Personal Finance, Politics, Science, Sports, Technology, Travel, Weird, World<br />
             Count: Any number between 2 &amp; 8<br />
             Style: light or dark<br />
-            Images: show or hide
+            Images: show or hide<br />
+            Columns: 1, 2, 3, or 4<br />
           </p>
           <br />
+          <h2>Widget</h2>
+          <h3>Example</h3>
+          <p>
+            1) Navigate to Appearance -> Widgets.<br />
+            2) Find the News Aggregator widget &amp; drag or add it to the sidebar/area of choice.<br />
+            3) Select options in the News Aggregator widget &amp; click save.
+          </p>
+          <br />
+          <h2>Shortcode</h2>
+          <p>Learn more: <a href="<?php echo esc_url( 'https://en.support.wordpress.com/shortcodes/' ); ?>" target="_blank">What are WordPress Shortcodes?</a></p>
+          <br />
           <h3>Example 1</h3>
-          <h4>Default implementation using settings above</h4>
+          <h4>Default display using the default settings specified above.</h4>
           <p><code>[newsaggregator]</code></p>
           <br />
           <h3>Example 2</h3>
-          <h4>Implementation with all four attributes defined.</h4>
-          <p><code>[newsaggregator topic="technology" count="2" style="dark" images="show"]</code></p>
+          <h4>Display with all five attributes defined.</h4>
+          <p><code>[newsaggregator topic="technology" count="2" style="dark" images="show" columns="3"]</code></p>
           <br />
           <h3>Example 3</h3>
-          <h4>Implementation only specifying some attributes, and using above defaults for the rest.</h4>
+          <h4>Display only specifying some attributes, and using above defaults for the rest.</h4>
           <p><code>[newsaggregator topic="business" images="hide"]</code></p>
           <br />
           <h3>Example 4</h3>
+          <h4>Display of eight Sports news items in a single column in the light theme.</h4>
+          <p><code>[newsaggregator topic="sports" count="8" style="light" colums="1"]</code></p>
+          <br />
+          <h3>Example 5</h3>
           <h4>Implementation within a WordPress theme file.</h4>
           <p><code>echo do_shortcode('[newsaggregator topic="sports" count="4"]');</code></p>
           <br />
           <p>
-            Powered by <a href="<?php echo esc_url( 'https://www.plnia.com' ); ?>" target="_blank" title="plnia"><img src="<?php echo esc_url( plugins_url('/assets/img/plnia-logo.png', dirname(__FILE__)) ); ?>" alt="plnia" style="width:67px;height:auto;margin-left:2px;vertical-align:bottom" /></a>
+            Powered by <a href="<?php echo esc_url( 'https://www.plnia.com/products/news-aggregation-api/' ); ?>" target="_blank" title="plnia"><img src="<?php echo esc_url( plugins_url('/assets/img/plnia-logo.png', dirname(__FILE__)) ); ?>" alt="plnia" class="plnia-logo" /></a>
           </p>
         </div>
         <br />
