@@ -1,4 +1,5 @@
 <?php
+if ( ! defined('ABSPATH') ) { exit; }
 /**
  * LifeCycle
 **/
@@ -11,6 +12,11 @@ class newsagg_LifeCycle extends newsagg_InstallIndicator {
     $this->saveInstalledVersion();
     $this->markAsInstalled();
     $this->setRandomKey();
+    $this->setTopic();
+    $this->setCount();
+    $this->setStyle();
+    $this->setImages();
+    $this->setColumns();
   }
 
   public function uninstall() {
@@ -18,60 +24,35 @@ class newsagg_LifeCycle extends newsagg_InstallIndicator {
     $this->markAsUnInstalled();
   }
 
-  /**
-   * @return void
-   */
   public function upgrade() {
   }
 
-  /**
-   * @return void
-   */
   public function activate() {  
     $this->saveInstalledVersion(); 
   }
 
-  /**
-   * @return void
-   */
   public function deactivate() {
     $this->saveInstalledVersion(); 
   }
 
-  /**
-   * @return void
-   */
   protected function initOptions() {
   }
 
   public function addActionsAndFilters() {
   }
 
-  /**
-   * @return void
-   */
-  public function addSettingsSubMenuPage() {
-    $this->addSettingsSubMenuPageNav();
-  }
-
   protected function requireExtraPluginFiles() {
   }
 
-  /**
-   * @return string Slug name for the URL to the Setting page
-   */
   protected function getSettingsSlug() {
     return get_class($this) . '_Settings';
   }
 
+  public function addSettingsSubMenuPage() {
+    $this->addSettingsSubMenuPageNav();
+  }
+
   protected function addSettingsSubMenuPageNav() {
-    $this->requireExtraPluginFiles();
-    $displayName = $this->getPluginDisplayName();
-    add_management_page($displayName,
-                     $displayName,
-                     'manage_options',
-                     $this->getSettingsSlug(),
-                     array(&$this, 'settingsPage'));
   }
 
 }
